@@ -6,18 +6,11 @@ import { CirclePlus, House } from "lucide-react";
 import CadastrarProduto from "./views/criar-produto";
 import Produtos from "./views/todos-produtos";
 import AtualizarProduto from "./views/atualizar-produto";
-
-import { PRODUTO } from "../../interfaces/interfaces";
-import useAtualizarProduto from "../../hooks/useProdutoAtualizar";
-import { storeProduto } from "../../contexts/storeProdutos";
 import { stroreModalFormAtualizarProduto } from "../../contexts/storeModalFormAtualizar";
 
-export default function Dashboard() {
-  
+export default function Dashboard() {  
   const [views, setViews] = useState(0);
   const nav = useNavigate();
-
-  // const {state:{produtoSelecionado}}=storeProduto()
   const {actions:{fecharModalAtualizar},state:{produtoSelecionado,modalFormAtualizarProduto}}=stroreModalFormAtualizarProduto()
 
   useEffect(() => {
