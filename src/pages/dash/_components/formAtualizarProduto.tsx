@@ -1,21 +1,14 @@
 import { FormEvent, useState } from "react";
 import { toast } from "sonner";
 import useProduto from "../../../hooks/useProduto";
+import { PRODUTO } from "../../../interfaces/interfaces";
 
 
-interface PRODUTO{
-    name:string
-    price:number
-    description:string
-    stock:number
-}
-interface produtoProps extends PRODUTO{
-    id:number
-}
+
 
 
 interface selectProduto{
-    produto?:produtoProps 
+    produto:PRODUTO 
     onClose:()=>void
 
 }
@@ -23,9 +16,6 @@ interface selectProduto{
 
 export default function FormAtualizarProduto({produto,onClose}:selectProduto){
 
-    if (!produto) {
-        return <div>Produto não encontrado</div>; 
-    }
     const [formData,setFormData]=useState<PRODUTO>({
         name:produto.name,
         price:produto.price,
@@ -34,6 +24,7 @@ export default function FormAtualizarProduto({produto,onClose}:selectProduto){
     })
 
     const {atualizarProduto}=useProduto()
+    
     const handleSubmit= async (e:FormEvent<HTMLFormElement>)=>{
         e.preventDefault()
         if(!formData.name || !formData.description  || !formData.price || !formData.stock  ){

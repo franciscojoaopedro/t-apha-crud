@@ -11,6 +11,7 @@ interface USER{
     password:string
 }
 interface PRODUTO{
+    id?:number
     name:string
     price:number
     description:string

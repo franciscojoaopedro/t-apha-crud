@@ -7,28 +7,31 @@ import { useQuery } from "@tanstack/react-query"
 import Spinner from "../../components/spinner-loading"
 
 
-
-interface produtoProps extends PRODUTO{
-    id?:number
-}
+import Cookies from "js-cookie"
+import { useNavigate } from "react-router-dom"
 
 export default  function Produtos(){
+    
     const [products,setProducts]=useState<PRODUTO[]> ([])
     
     const {actions:{buscarProduto},state:{produtos}}=storeProduto()
     const {data,isLoading }= useQuery({ queryKey: ['todos-produtos'], queryFn: buscarProduto })
-
+    const nav=useNavigate() 
     useEffect(()=>{
         setProducts([...produtos])
     },[data])
 
-const handleAddCart=(produto:produtoProps)=>{
-    //Adicionar ao carrinho
-    //store.actions.adicionarCarrinho(product)
-    //console.log("Adicionar ao carrinho")
+const handleAddCart=(produto:PRODUTO)=>{
     toast.success(` ${produto.name} adicionado ao carrinho`)
-
 }
+
+useEffect(() => {
+    const token = Cookies.get("token") as string;
+    if (!token) {
+      toast.info("Primeiro faça o login");
+      nav("/auth/login");
+    }
+  }, []);
 
 
 

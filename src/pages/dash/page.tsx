@@ -6,21 +6,25 @@ import { CirclePlus, House } from "lucide-react";
 import CadastrarProduto from "./views/criar-produto";
 import Produtos from "./views/todos-produtos";
 import AtualizarProduto from "./views/atualizar-produto";
-import useProduto from "../../hooks/useProduto";
+
+import { PRODUTO } from "../../interfaces/interfaces";
+import useAtualizarProduto from "../../hooks/useProdutoAtualizar";
 
 export default function Dashboard() {
-  const{produtoSelecionado,setModalFormAtualizarProduto,modalFormAtualizarProduto}=useProduto()
-    
+  
   const [views, setViews] = useState(0);
   const nav = useNavigate();
 
+  const {setModalFormAtualizarProduto,modalFormAtualizarProduto,produtoSelecionado}=useAtualizarProduto()
   useEffect(() => {
     const token = Cookies.get("token") as string;
     if (!token) {
       toast.info("Primeiro faça o login");
       nav("/auth/login");
     }
+
   }, []);
+
 
   return (
     <main className="w-full h-screen bg-white flex justify-center items-center">
@@ -50,10 +54,9 @@ export default function Dashboard() {
         <section className="bg-slate-200  relative shadow-md items-center justify-center w-full h-screen rounded-l-2xl">
           {views === 0 && <Produtos />}
           {views === 1 && <CadastrarProduto />}
-          {
-          modalFormAtualizarProduto && (
+          {modalFormAtualizarProduto &&(
             <AtualizarProduto
-              produto={produtoSelecionado}
+              produto={produtoSelecionado as PRODUTO }
               onClose={() => setModalFormAtualizarProduto(false)}
 
             />

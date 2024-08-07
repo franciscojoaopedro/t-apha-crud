@@ -2,17 +2,11 @@ import { toast } from "sonner";
 import { PRODUTO } from "../interfaces/interfaces";
 import api from "../services/api";
 import Cookies from "js-cookie";
-import { useState } from "react";
 
 
-interface produtoProps extends PRODUTO{
-    id?:number
-  }
+
 export default function useProduto(){
-    const [modalFormAtualizarProduto,setModalFormAtualizarProduto]=useState(false)
-    const [produtoSelecionado,setProdutoSelecionado]=useState<produtoProps>()
    
-
 
     async function criarProduto(data:PRODUTO){
 
@@ -81,10 +75,7 @@ export default function useProduto(){
     return {criarProduto,
         atualizarProduto,
         deletarProduto,
-        modalFormAtualizarProduto,
-        setModalFormAtualizarProduto,
-        produtoSelecionado,
-        setProdutoSelecionado
+       
     }
 
 

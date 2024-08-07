@@ -1,14 +1,9 @@
 import { FormEvent, useState } from "react";
 import { toast } from "sonner";
 import useProduto from "../../../hooks/useProduto";
+import { PRODUTO } from "../../../interfaces/interfaces";
 
 
-interface PRODUTO{
-    name:string
-    price:number
-    description:string
-    stock:number
-}
 export default function FormRegister(){
     const [formData,setFormData]=useState<PRODUTO>({
        name:"",

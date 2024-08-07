@@ -6,18 +6,16 @@ import useProduto from "../../../hooks/useProduto"
 import { toast } from "sonner"
 import { useQuery } from "@tanstack/react-query"
 import Spinner from "../../../components/spinner-loading"
+import useAtualizarProduto from "../../../hooks/useProdutoAtualizar"
 
 
 
-interface produtoProps extends PRODUTO{
-  id?:number
-}
+
 
 export default function Produtos(){
-    const [products,setProducts]=useState<produtoProps[]> ([])
-    const [produtoSelecionado,setProdutoSelecionado]=useState<produtoProps>()
-    const{deletarProduto,setModalFormAtualizarProduto}=useProduto()
-    
+    const [products,setProducts]=useState<PRODUTO[]> ([])
+    const{deletarProduto}=useProduto()
+    const {setModalFormAtualizarProduto,setProdutoSelecionado,produtoSelecionado}=useAtualizarProduto()
     const {actions:{buscarProduto},state:{produtos}}=storeProduto()
     const {data,isLoading }= useQuery({ queryKey: ['todos-produtos'], queryFn: buscarProduto })
     useEffect(()=>{
@@ -29,13 +27,16 @@ export default function Produtos(){
       deletarProduto(id)
     }
 
-    const handleAtualizarProduto=(produto:produtoProps)=>{
-      if(produto){
+    const handleSelecionarProduto=(produto:PRODUTO)=>{
+        if(!produto) return;
         setProdutoSelecionado(produto)
         setModalFormAtualizarProduto(true)
+
         console.log(produtoSelecionado)
-        toast.info("Protudo atualizado com sucesso!",{icon:<Rss />,closeButton:true})
-      }
+        toast.info(`Produto selecionado  ${produto.name} `   ,{icon:<Rss />,closeButton:true})
+
+      
+    
      
     }
 
@@ -57,7 +58,7 @@ export default function Produtos(){
           <div className="absolute gap-3 bottom-0 mb-3 w-full flex justify-center items-center">
             <button
               className="bg-blue-400 px-[32px] py-2 text-white font-semibold rounded"
-              onClick={() =>handleAtualizarProduto(product) }
+              onClick={() =>handleSelecionarProduto(product) }
             >
               Atualizar
             </button>
