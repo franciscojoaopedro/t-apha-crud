@@ -1,9 +1,7 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { toast } from "sonner";
 import useProduto from "../../../hooks/useProduto";
 import { PRODUTO } from "../../../interfaces/interfaces";
-
-
 
 
 
@@ -16,15 +14,17 @@ interface selectProduto{
 
 export default function FormAtualizarProduto({produto,onClose}:selectProduto){
 
+  
     const [formData,setFormData]=useState<PRODUTO>({
-        name:produto.name,
-        price:produto.price,
-        description:produto.description,
-        stock:produto.stock,
+        name:produto?.name,
+        price:produto?.price,
+        description:produto?.description,
+        stock:produto?.stock,
     })
 
     const {atualizarProduto}=useProduto()
-    
+
+  
     const handleSubmit= async (e:FormEvent<HTMLFormElement>)=>{
         e.preventDefault()
         if(!formData.name || !formData.description  || !formData.price || !formData.stock  ){
@@ -40,6 +40,7 @@ export default function FormAtualizarProduto({produto,onClose}:selectProduto){
 
 
         const data={
+
             name:formData.name,
             price:formData.price,
             description:formData.description,
@@ -49,6 +50,9 @@ export default function FormAtualizarProduto({produto,onClose}:selectProduto){
         
     }
 
+    useEffect(()=>{
+     
+    },[produto])
 
 
 
@@ -145,7 +149,7 @@ export default function FormAtualizarProduto({produto,onClose}:selectProduto){
               </button>
               <button 
                 onClick={onClose}
-                type="submit"
+                type="button"
                 className="flex w-full justify-center rounded-md bg-red-400 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                Fechar

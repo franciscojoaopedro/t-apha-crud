@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react"
 import { PRODUTO } from "../../../interfaces/interfaces"
 import { storeProduto } from "../../../contexts/storeProdutos"
-import { Rss, Trash } from "lucide-react"
+import { Trash } from "lucide-react"
 import useProduto from "../../../hooks/useProduto"
-import { toast } from "sonner"
+
 import { useQuery } from "@tanstack/react-query"
 import Spinner from "../../../components/spinner-loading"
-import useAtualizarProduto from "../../../hooks/useProdutoAtualizar"
+
+import { stroreModalFormAtualizarProduto } from "../../../contexts/storeModalFormAtualizar"
 
 
 
@@ -15,11 +16,14 @@ import useAtualizarProduto from "../../../hooks/useProdutoAtualizar"
 export default function Produtos(){
     const [products,setProducts]=useState<PRODUTO[]> ([])
     const{deletarProduto}=useProduto()
-    const {setModalFormAtualizarProduto,setProdutoSelecionado,produtoSelecionado}=useAtualizarProduto()
+  
     const {actions:{buscarProduto},state:{produtos}}=storeProduto()
+    const {actions:{abrirModalAtualizar},state:{produtoSelecionado}}=stroreModalFormAtualizarProduto()
+
     const {data,isLoading }= useQuery({ queryKey: ['todos-produtos'], queryFn: buscarProduto })
     useEffect(()=>{
         setProducts([...produtos])
+        console.log(produtoSelecionado)
     },[data])
 
 
@@ -27,18 +31,7 @@ export default function Produtos(){
       deletarProduto(id)
     }
 
-    const handleSelecionarProduto=(produto:PRODUTO)=>{
-        if(!produto) return;
-        setProdutoSelecionado(produto)
-        setModalFormAtualizarProduto(true)
-
-        console.log(produtoSelecionado)
-        toast.info(`Produto selecionado  ${produto.name} `   ,{icon:<Rss />,closeButton:true})
-
-      
-    
-     
-    }
+  
 
     return(
       <>
@@ -58,7 +51,7 @@ export default function Produtos(){
           <div className="absolute gap-3 bottom-0 mb-3 w-full flex justify-center items-center">
             <button
               className="bg-blue-400 px-[32px] py-2 text-white font-semibold rounded"
-              onClick={() =>handleSelecionarProduto(product) }
+              onClick={() =>abrirModalAtualizar(product) }
             >
               Atualizar
             </button>

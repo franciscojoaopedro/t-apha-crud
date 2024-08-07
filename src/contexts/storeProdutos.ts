@@ -2,29 +2,22 @@ import { create } from "zustand";
 import api from "../services/api";
 import Cookies from "js-cookie";
 import { toast } from "sonner";
+import { PRODUTO } from "../interfaces/interfaces";
 
 
-interface Produto{
-    name:string
-    price:number
-    description:string
-    stock:number
-}
-
-interface produtoProps extends Produto{
-    id?:number
-}
 
 
 type typeStoreProduto={
     state:{
-        produtos:Produto[]
-        produto:produtoProps |null
+        produtos:PRODUTO[]
+        produto:PRODUTO|null,
+        produtoSelecionado:PRODUTO |null
 
     }
     actions:{
         buscarProduto: () =>void,
-        buscarProdutoId:(id:number)=>void
+        buscarProdutoId:(id:number)=>void,
+        selecionarProduto:(produto:PRODUTO)=>void,
     }
 }
 
@@ -33,7 +26,8 @@ type typeStoreProduto={
 export const storeProduto=create<typeStoreProduto>((set)=>({
     state:{
         produtos:[],
-        produto:null
+        produto:null,
+        produtoSelecionado:null
     },
     actions:{
         buscarProduto:async  ()  =>{
@@ -43,7 +37,7 @@ export const storeProduto=create<typeStoreProduto>((set)=>({
                 }
             })
             .then((response)=>{
-                const produtos: produtoProps[] =response.data.data.products
+                const produtos: PRODUTO[] =response.data.data.products
                 set((state)=>({
                     state:{
                         ...state.state,
@@ -73,7 +67,15 @@ export const storeProduto=create<typeStoreProduto>((set)=>({
               } catch (error) {
                 toast.error(`Erro ao buscar produto com id ${id}`);
               }
-        }
+        },
+        selecionarProduto:(produto:PRODUTO)=>
+            set((state)=>({
+            state:{
+               ...state.state,
+                produtoSelecionado:produto
+            }
+        }))
+
 
     }
 }))

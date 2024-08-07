@@ -9,19 +9,26 @@ import AtualizarProduto from "./views/atualizar-produto";
 
 import { PRODUTO } from "../../interfaces/interfaces";
 import useAtualizarProduto from "../../hooks/useProdutoAtualizar";
+import { storeProduto } from "../../contexts/storeProdutos";
+import { stroreModalFormAtualizarProduto } from "../../contexts/storeModalFormAtualizar";
 
 export default function Dashboard() {
   
   const [views, setViews] = useState(0);
   const nav = useNavigate();
 
-  const {setModalFormAtualizarProduto,modalFormAtualizarProduto,produtoSelecionado}=useAtualizarProduto()
+  // const {state:{produtoSelecionado}}=storeProduto()
+  const {actions:{fecharModalAtualizar},state:{produtoSelecionado,modalFormAtualizarProduto}}=stroreModalFormAtualizarProduto()
+
   useEffect(() => {
     const token = Cookies.get("token") as string;
+    
     if (!token) {
       toast.info("Primeiro faça o login");
       nav("/auth/login");
+
     }
+    console.log(produtoSelecionado)
 
   }, []);
 
@@ -54,10 +61,10 @@ export default function Dashboard() {
         <section className="bg-slate-200  relative shadow-md items-center justify-center w-full h-screen rounded-l-2xl">
           {views === 0 && <Produtos />}
           {views === 1 && <CadastrarProduto />}
-          {modalFormAtualizarProduto &&(
+          {modalFormAtualizarProduto && produtoSelecionado   &&(
             <AtualizarProduto
-              produto={produtoSelecionado as PRODUTO }
-              onClose={() => setModalFormAtualizarProduto(false)}
+              produto={produtoSelecionado}
+              onClose={fecharModalAtualizar}
 
             />
           )

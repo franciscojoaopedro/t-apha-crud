@@ -10,7 +10,7 @@ interface USER{
     phone:string
     password:string
 }
-interface PRODUTO{
+ interface PRODUTO{
     id?:number
     name:string
     price:number
