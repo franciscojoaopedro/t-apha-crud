@@ -12,8 +12,8 @@ interface formDataProps{
 export default function FormLogin(){
 
     const [formData,setFormData]=useState<formDataProps>({
-        taxNumber:"12345678900",
-        password:"123456",
+        taxNumber:"",
+        password:"",
     })
     const nav=useNavigate()
 

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { toast, Toaster } from "sonner";
+import {  Toaster } from "sonner";
 import Cookies from "js-cookie";
 
 
@@ -12,7 +12,7 @@ export default function AuthLayout(){
     useEffect(()=>{
         const token=Cookies.get("token") as string
         if(token)  nav("/");
-        toast.info("Faça fez o login!")
+      
     },[])
 
 

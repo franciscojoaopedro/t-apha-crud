@@ -12,8 +12,13 @@ export default function useAuth (){
             Cookies.set("token",response.data.data.token)
             toast.success(response.data.message)
       })
-      .catch((error)=>{
-        console.log(error)
+      .catch((err )=>{
+        const error= err as AxiosError
+        const message=error.response?.data as {messege:[string]}
+        console.log(message.messege)
+        toast.error(message.messege)
+        return
+       
       })
       
     }
@@ -22,7 +27,7 @@ export default function useAuth (){
     async function register (data:USER){
        await api.post("/auth/register",data)
        .then((response)=>{
-            console.log(response.data.message)
+            toast.success(response.data.message)
       })
       .catch((error:AxiosError)=>{
 

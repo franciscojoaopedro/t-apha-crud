@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../../../hooks/useAuth";
 import { FormEvent, useState } from "react";
 import { toast } from "sonner";
@@ -8,12 +8,13 @@ import { USER } from "../../../../interfaces/interfaces";
 
 export default function FormRegister(){
 
+  const nav=useNavigate()
     const [formData,setFormData]=useState<USER>({
-        mail:"franciscojoaopedro2024@gmail.com",
-        name:"Francisco Pedro",
-        phone:"1234754889",
-        taxNumber:"00123456789",
-        password:"#123456",
+        mail:"",
+        name:"",
+        phone:"",
+        taxNumber:"",
+        password:"",
 
     })
 
@@ -35,16 +36,14 @@ export default function FormRegister(){
             phone:formData.phone,
         }
         await register(data)
-        .catch(()=>{
-            setFormData({
-              mail:"",
-              name:"",
-              phone:"",
-              taxNumber:"",
-              password:"",
-            })
-            
-        })
+       setFormData({
+        mail:"",
+        name:"",
+        phone:"",
+        taxNumber:"",
+        password:"",
+       })
+       nav("/auth/login")
     }
 
 
